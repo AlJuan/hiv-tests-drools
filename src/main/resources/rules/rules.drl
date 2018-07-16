@@ -1,0 +1,71 @@
+package fiuba.fallas
+import fiuba.fallas.model.Question
+import fiuba.fallas.model.Answer
+import fiuba.fallas.model.Solution
+import java.util.Scanner
+
+rule Init when
+then
+    insert( new Question( "1", "¿El paciente es un adulto? (y/n)" ) );
+end
+
+rule End when
+    s : Solution()
+then
+    System.out.println("Diagnóstico encontrado:\n" + s.getText() );
+end
+
+rule AdultoDonde when
+    q : Question( id == "1" )
+    Answer( question == q, answer == "y" )
+then
+    insertLogical( new Question( "2", "¿Se encuentra en un Centro de Salud o Testeo Voluntario? (y/n)" ) );
+end
+
+
+
+
+
+
+rule AskQuestion when
+    q : Question( )
+    not Answer( question == q )
+then
+    System.out.println( q.getId() + " : " + q.getText() );
+    System.out.print("> ");
+    Scanner keyboard = new Scanner(System.in);
+    insert( keyboard.nextLine() );
+end
+
+rule ResetAnswer when
+    s : String( this matches "\\d+" )
+    q : Question( id == s )
+    a : Answer( question == q)
+then
+    System.out.println( "Removing Answer : " + a );
+    delete( a );
+    delete( s );
+end
+
+rule QuestionDoesNotExist when
+    s : String( this matches "\\d+" )
+    not Question( id == s )
+then
+    System.out.println( "Question does not exist, id " + s );
+end
+
+rule ProcessAnswer when
+    s : String()
+    q : Question()
+    not Answer( question == q )
+then
+    insert( new Answer( q, s ) );
+    delete( s );
+end
+
+rule InvalidInput when
+    s : String( )
+then
+    System.out.println( "Invalid input : " + s );
+    delete( s );
+end
