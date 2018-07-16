@@ -15,12 +15,39 @@ then
     System.out.println("Diagnóstico encontrado:\n" + s.getText() );
 end
 
+#RULE 4
 rule AdultoDonde when
     q : Question( id == "1" )
     Answer( question == q, answer == "y" )
 then
     insertLogical( new Question( "2", "¿Se encuentra en un Centro de Salud o Testeo Voluntario? (y/n)" ) );
 end
+
+
+rule AdultoTestRapido when
+    q : Question( id == "2" )
+    Answer( question == q, answer == "y" )
+then
+    insertLogical( new Question( "3", "Se debe realizar un test rapido. Ingrese el resultado: (+/-)" ) );
+end
+
+#RULE 6
+rule AdultoTestEIACuartaGen when
+    q : Question( id == "3" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Question( "4", "Se debe realizar un test EIA de cuarta generacion. Ingrese el resultado: (+/-)" ) );
+end
+
+#RULE 8
+rule AdultoTestEIACuartaGenNegativo when
+    q : Question( id == "4" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Solution( "Negativo para anticuerpos HIV-1/2" ) );
+end
+
+
 
 
 
