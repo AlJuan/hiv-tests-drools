@@ -12,10 +12,10 @@ end
 rule End when
     s : Solution()
 then
-    System.out.println("Diagnóstico encontrado:\n" + s.getText() );
+    System.out.println("Resultado:\n" + s.getText() );
 end
 
-#RULE 4
+/* Regla4 */
 rule AdultoDonde when
     q : Question( id == "1" )
     Answer( question == q, answer == "y" )
@@ -31,7 +31,7 @@ then
     insertLogical( new Question( "3", "Se debe realizar un test rapido. Ingrese el resultado: (+/-)" ) );
 end
 
-#RULE 6
+/* Regla 6 */
 rule AdultoTestEIACuartaGen when
     q : Question( id == "3" )
     Answer( question == q, answer == "+" )
@@ -39,7 +39,7 @@ then
     insertLogical( new Question( "4", "Se debe realizar un test EIA de cuarta generacion. Ingrese el resultado: (+/-)" ) );
 end
 
-#RULE 8
+/* Regla 8 */
 rule AdultoTestEIACuartaGenNegativo when
     q : Question( id == "4" )
     Answer( question == q, answer == "-" )
@@ -47,9 +47,29 @@ then
     insertLogical( new Solution( "Negativo para anticuerpos HIV-1/2" ) );
 end
 
+/* Regla 9 */
+rule AdultoTestPersonaDeRiesgoHIV2 when
+    q : Question( id == "4" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Question( "5", "¿El paciente es persona de riesgo HIV-2?: (y/n)" ) );
+end
 
+/* Regla 9 */
+rule AdultoTestWBoLIAParaHIV2 when
+    q : Question( id == "5" )
+    Answer( question == q, answer == "y" )
+then
+    insertLogical( new Question( "6", "Se necesita realizar un estudio Western Blot o LIA para HIV-2. Ingrese el resultado: (+/-)" ) );
+end
 
-
+/* Regla 11 */
+rule AdultoTestWBoLIAParaHIV2Positivo when
+    q : Question( id == "6" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Solution( "Se necesitan estudios suplementarios HIV-2 en laboratorio de referencia" ) );
+end
 
 
 
