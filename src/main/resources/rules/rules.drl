@@ -116,7 +116,7 @@ end
 /* ------------------------------------------------------Adulto------------------------------------------*/
 
 /* ------------------------------------------------------Ninio mayor de 18 meses------------------------------------------*/
-/*  Rule 1*/
+/*  Regla 1*/
 rule NinioMayorDe18Meses when
     q : Question( id == "1" )
     Answer( question == q, answer == "n" )
@@ -132,7 +132,7 @@ then
     insertLogical( new Question("10", "Se debe realizar un diagnostico serologico. Ingrese el resultado: (+/-)"));
 end
 
-/* Rule 2 */
+/* Regla 2 */
 rule NinioMayorDe18MesesDiagnosticoSerologicoPositivo when
     q : Question( id == "10" )
     Answer( question == q, answer == "+" )
@@ -140,7 +140,7 @@ then
     insertLogical( new Solution("Infectado"));
 end
 
-/* Rule 3 */
+/* Regla 3 */
 rule NinioMayorDe18MesesDiagnosticoSerologicoNegativo when
     q : Question( id == "10" )
     Answer( question == q, answer == "-" )
@@ -152,13 +152,100 @@ end
 
 /* ------------------------------------------------------Ninio menor de 18 meses------------------------------------------*/
 
+rule NinioMenorDe18Meses when
+    q : Question( id == "9" )
+    Answer( question == q, answer == "n" )
+then
+    insertLogical( new Question("11", "¿Se le realizó una primera muestra 48/74 hs o 14/30 días? (y/n)"));
+end
+
+/* Regla 17 */
+rule NinioMenorDe18MesesSinPrimerEstudio when
+    q : Question( id == "11" )
+    Answer( question == q, answer == "n" )
+then
+    insertLogical( new Question("12", "Se debe realizar una repeticion del estudio. Ingrese el resultado (+/-)"));
+end
+
+/* Regla 18 */
+rule NinioMenorDe18MesesPrimerEstudioNegativo when
+    q : Question( id == "12" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Solution("Seguimiento serológico a los 18 meses"));
+end
+
+/* Regla 19 */
+rule NinioMenorDe18MesesPrimerEstudioPositivo when
+    q : Question( id == "12" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Solution("Infectado"));
+end
+
+rule NinioMenorDe18MesesPrimeraMuestraEnPrimerosDias when
+    q : Question( id == "11" )
+    Answer( question == q, answer == "y" )
+then
+    insertLogical( new Question("13", "Ingrese el resultado de la primera muestra (+/-)"));
+end
+
+rule NinioMenorDe18MesesPrimeraMuestraEnPrimerosDiasPositiva when
+    q : Question( id == "13" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical(new Question("14")); /* Question: Nueva muestra*/
+    insert("+");
+end
+
+/* Regla 21 */
+rule NinioMenorDe18MesesPrimeraMuestraEnPrimerosDiasNegativa when
+    q : Question( id == "13" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Question("14", "Se realiza una muestra en uno o dos meses. Ingrese el resultado (+/-)"));
+end
+
+/* Regla 22 */
+rule NinioMenorDe18MesesMuestraLuegoDe1o2MesesNegativo when
+    q : Question( id == "14" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Solution("No Infectado"));
+end
+
+/* Regla 23 */
+rule NinioMenorDe18MesesMuestraLuegoDe1o2MesesPositivo when
+    q : Question( id == "14" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Question("15", "Se realiza una nueva muestra. Ingrese el resultado (+/-)"));
+end
+
+/* Regla 24 */
+rule NinioMenorDe18MesesNuevaMuestraPositivo when
+    q : Question( id == "15" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Solution("Infectado"));
+end
+
+/* Regla 25 */
+rule NinioMenorDe18MesesNuevaMuestraNegativo when
+    q : Question( id == "15" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Solution("No Infectado"));
+end
+
+
 
 
 
 /* ------------------------------------------------------Ninio menor de 18 meses------------------------------------------*/
 
 rule AskQuestion when
-    q : Question( )
+    q : Question( text != null)
     not Answer( question == q )
 then
     System.out.println( q.getId() + " : " + q.getText() );

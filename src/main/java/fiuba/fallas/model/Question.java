@@ -5,6 +5,10 @@ public class Question {
     private String id;
     private String text;
 
+    public Question(String id){
+        this.id = id;
+    }
+
     public Question(String id, String text) {
         this.id = id;
         this.text = text;
@@ -54,8 +58,6 @@ public class Question {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + text.hashCode();
-        return result;
+        return id.hashCode();
     }
 }
