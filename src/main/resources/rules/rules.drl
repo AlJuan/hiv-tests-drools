@@ -113,6 +113,23 @@ then
     insertLogical( new Solution("Negativo para anticuerpos HIV-1"));
 end
 
+/* Regla4 */
+rule AdultoLaboratorioClinico when
+    q : Question( id == "2" )
+    Answer( question == q, answer == "n" )
+then
+    insertLogical(new Question("3")); /* AdultoTestEIACuartaGen*/
+    insert("+");
+end
+
+rule AdultoTestPersonaDeRiesgoHIV2Negativo when
+    q : Question( id == "5" )
+    Answer( question == q, answer == "n" )
+then
+    insertLogical(new Question("6")); /* estudio de Carga Viral*/
+    insert("-");
+end
+
 /* ------------------------------------------------------Adulto------------------------------------------*/
 
 /* ------------------------------------------------------Ninio mayor de 18 meses------------------------------------------*/
