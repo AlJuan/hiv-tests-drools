@@ -71,6 +71,45 @@ then
     insertLogical( new Solution( "Se necesitan estudios suplementarios HIV-2 en laboratorio de referencia" ) );
 end
 
+/* Regla 12 */
+rule AdultoTestWBoLIAParaHIV2Negativo when
+    q : Question( id == "6" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Question( "7", "Se necesita realizar un estudio de Carga Viral. Ingrese el resultado: (+/-)" ) );
+end
+
+/* Regla 13 */
+rule AdultoTestCargaViralPositivo when
+    q : Question( id == "7" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Solution("Positivo para anticuerpos HIV-1 y carga viral"));
+end
+
+/* Regla 14 */
+rule AdultoTestCargaViralNegativo when
+    q : Question( id == "7" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Question( "8", "Se necesita realizar un estudio Western Blot para HIV-1. Ingrese el resultado: (+/-)"));
+end
+
+/* Regla 15 */
+rule AdultoTestWB1Positivo when
+    q : Question( id == "8" )
+    Answer( question == q, answer == "+" )
+then
+    insertLogical( new Solution("Positivo para anticuerpos HIV-1"));
+end
+
+/* Regla 16 */
+rule AdultoTestWB1Negativo when
+    q : Question( id == "8" )
+    Answer( question == q, answer == "-" )
+then
+    insertLogical( new Solution("Negativo para anticuerpos HIV-1"));
+end
 
 
 
